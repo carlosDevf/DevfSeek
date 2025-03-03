@@ -6,7 +6,16 @@ export default function App() {
   const [input, setInput] = useState("");
 
   const sendMessage = () => {
-    console.log("Sending message:", input);
+    if (!input.trim()) return;
+    setMessages([...messages, { text: input, sender: "user" }]);
+    setInput("");
+
+    setTimeout(() => {
+      setMessages((prev) => [
+        ...prev,
+        { text: "Respuesta generada...", sender: "bot" },
+      ]);
+    }, 1000);
   };
 
   return (

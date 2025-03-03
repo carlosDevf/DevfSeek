@@ -12,7 +12,7 @@ If you are developing a production application, we recommend using TypeScript an
   - Seguir las instrucciones de la documentación oficial para instalar tailwindcss con Vite
     - https://tailwindcss.com/docs/installation/using-vite
 
-## Funcionalidad del Chat
+## Parte 2 - Funcionalidad del Chat y Nuevo Chat
 
 ```javascript
 const [messages, setMessages] = useState([]);
@@ -32,8 +32,8 @@ const sendMessage = async (e) => {
 };
 ```
 
-## Nuevo Chat - Guardar en BD o LocalStorage
-
 - Crear un boton para limpiar el chat y guardar el historial de mensajes en un una BD
-- Hacer el GetSarted https://www.prisma.io/
+
+## Parte 3  - Contexto Entre Componentes con Reducer
+
 
