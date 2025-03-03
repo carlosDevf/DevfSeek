@@ -35,5 +35,5 @@ const sendMessage = async (e) => {
 ## Nuevo Chat - Guardar en BD o LocalStorage
 
 - Crear un boton para limpiar el chat y guardar el historial de mensajes en un una BD
-
+- Hacer el GetSarted https://www.prisma.io/
 
