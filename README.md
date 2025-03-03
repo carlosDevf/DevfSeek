@@ -34,13 +34,11 @@ const sendMessage = async (e) => {
 
 - Crear un boton para limpiar el chat y guardar el historial de mensajes en un una BD
 
-## Parte 3 - Contexto Entre Componentes conReducer
+## Parte 3 - Creando un contexto y reducer con las mejores practicas
 
-### Creando un contexto y reducer con las mejores practicas
+- Uso de reducer y context para manejar el estado de la aplicación
+  - https://kentcdodds.com/blog/how-to-use-react-context-effectively
 
-    - https://kentcdodds.com/blog/how-to-use-react-context-effectively
-    - Uso de reducer y context para manejar el estado de la aplicación
+## Parte 4 - Creando un servidor con Prisma
 
-    
-
-
+Sigue los pasos de la documentación oficial para crear una cuenta en Prisma usando Existing Project - https://github.com/prisma/prisma-examples/tree/latest/orm/express

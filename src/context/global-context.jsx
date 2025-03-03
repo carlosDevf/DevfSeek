@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { saveMessage } from "../prisma/prisma";
 const GlobalContext = React.createContext();
 
 const storage = {
@@ -26,6 +27,8 @@ function globalReducer(state, action) {
         "history",
         JSON.stringify([...messages, newChat]),
       );
+
+      saveMessage({ body: { message: newChat.title } });
 
       // limpiamos el chat actual
       state.currentChat = [];
