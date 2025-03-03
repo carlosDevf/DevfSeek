@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SendHorizontal } from "lucide-react";
+import { useGlobal } from "./context/global-context";
 
 export default function App() {
+  const hook = useGlobal()
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
@@ -17,6 +19,12 @@ export default function App() {
       ]);
     }, 1000);
   };
+
+  useEffect(() => {
+    if (!messages.length) return;
+    const event = { type: "@current_chat", payload: messages };
+    hook.dispatch(event);
+  }, [messages, hook]);
 
   return (
     <div className="flex flex-col h-screen w-full bg-gray-900 text-white justify-end">

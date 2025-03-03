@@ -34,6 +34,13 @@ const sendMessage = async (e) => {
 
 - Crear un boton para limpiar el chat y guardar el historial de mensajes en un una BD
 
-## Parte 3  - Contexto Entre Componentes con Reducer
+## Parte 3 - Contexto Entre Componentes conReducer
+
+### Creando un contexto y reducer con las mejores practicas
+
+    - https://kentcdodds.com/blog/how-to-use-react-context-effectively
+    - Uso de reducer y context para manejar el estado de la aplicación
+
+    
 
 
