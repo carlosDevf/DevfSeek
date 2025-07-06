@@ -1,25 +1,39 @@
 import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SendHorizontal } from "lucide-react";
 import { useGlobal } from "./context/global-context";
 import useOllamaHook from "./api/useOllamaHook";
+
+// Esquema de validación con Zod
+const messageSchema = z.object({
+  text: z
+    .string()
+    .min(3, "El mensaje debe tener al menos 3 caracteres")
+    .max(200, "El mensaje es demasiado largo"),
+});
 
 export default function App() {
   const hook = useGlobal();
   const ollamaHook = useOllamaHook();
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
 
-  const sendMessage = () => {
-    if (!input.trim()) return;
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(messageSchema),
+  });
 
-    setMessages((prev) => [
-      ...prev,
-      { text: input, sender: "user" },
-      { text: "", sender: "bot" }
-    ]);
+  const onSubmit = (data) => {
+    setMessages((prev) => [...prev, { text: data.text, sender: "user" }]);
+    reset();
 
-    setInput("");
-    ollamaHook.handleSubmit(input);
+    // Simular respuesta del bot
+    ollamaHook.handleSubmit(data.text);
   };
 
   // Al recibir chunks de streaming: actualiza SOLO el último mensaje del bot
@@ -61,11 +75,10 @@ export default function App() {
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={`px-4 py-2 rounded-lg ${
-              msg.sender === "user"
+            className={`px-4 py-2 rounded-lg ${msg.sender === "user"
                 ? "bg-blue-600 self-end"
                 : "bg-gray-700 self-start mt-2"
-            }`}
+              }`}
           >
             {msg.text}
             {ollamaHook.loading && msg.sender === "bot" && index === messages.length - 1 && (
@@ -74,24 +87,29 @@ export default function App() {
           </div>
         ))}
       </div>
-      <div className="p-4 flex items-center bg-gray-800">
-        <input
-          type="text"
-          className="flex-1 p-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-          placeholder="Escribe tu mensaje..."
-        />
-        <button
-          className="ml-2 p-2 bg-blue-600 rounded-lg"
-          onClick={sendMessage}
-          disabled={ollamaHook.loading}
-        >
-          <SendHorizontal size={20} />
-        </button>
-      </div>
-    </div>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="p-4 flex flex-col bg-gray-800 space-y-2"
+      >
+        <div className="flex items-center">
+          <input
+            type="text"
+            placeholder="Escribe un mensaje..."
+            className="flex-1 p-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none"
+            {...register("text")}
+          />
+          <button
+            type="submit"
+            className="ml-2 p-2 bg-blue-600 rounded-lg"
+          >
+            <SendHorizontal size={20} />
+          </button>
+        </div>
+        {errors.text && (
+          <span className="text-red-400 text-sm">{errors.text.message}</span>
+        )}
+      </form>
+    </div >
   );
 }
 
@@ -99,3 +117,4 @@ export default function App() {
 // NOTA: PROMPT PROPUESTO, para clase: 
 // <think> Alright, the user said "hola". That's Spanish for "hello". I should respond in a friendly manner. Maybe say "¡Hola! ¿En qué puedo ayudarte hoy?" to be welcoming and offer assistance. </think> ¡Hola! ¿En qué puedo ayudarte hoy?
 // es es un ejemplo d ela repuesta del bot, como podria manejarse esta parte de forma mas natural? dame varias opciones de como podria ser la respuesta del bot, pero sin que diga "pensando" o <think>... </think> y que sea mas natural, como si fuera una persona real respondiendo.
+
