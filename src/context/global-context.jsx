@@ -1,6 +1,5 @@
 import * as React from "react";
 
-import { saveMessage } from "../prisma/prisma";
 const GlobalContext = React.createContext();
 
 const storage = {
@@ -28,7 +27,7 @@ function globalReducer(state, action) {
         JSON.stringify([...messages, newChat]),
       );
 
-      saveMessage({ body: { message: newChat.title } });
+      // TODO: IMPLEMENTAR GUARDAADO EN BASE DE DATOS EXRPRESS
 
       // limpiamos el chat actual
       state.currentChat = [];

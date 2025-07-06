@@ -24,7 +24,7 @@ export default function App() {
     if (!messages.length) return;
     const event = { type: "@current_chat", payload: messages };
     hook.dispatch(event);
-  }, [messages, hook]);
+  }, [messages]);
 
   return (
     <div className="flex flex-col h-screen w-full bg-gray-900 text-white justify-end">
