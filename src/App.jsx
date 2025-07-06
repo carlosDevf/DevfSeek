@@ -1,15 +1,34 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SendHorizontal } from "lucide-react";
+
+// Esquema de validación con Zod
+const messageSchema = z.object({
+  text: z
+    .string()
+    .min(3, "El mensaje debe tener al menos 3 caracteres")
+    .max(200, "El mensaje es demasiado largo"),
+});
 
 export default function App() {
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
 
-  const sendMessage = () => {
-    if (!input.trim()) return;
-    setMessages([...messages, { text: input, sender: "user" }]);
-    setInput("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(messageSchema),
+  });
 
+  const onSubmit = (data) => {
+    setMessages((prev) => [...prev, { text: data.text, sender: "user" }]);
+    reset();
+
+    // Simular respuesta del bot
     setTimeout(() => {
       setMessages((prev) => [
         ...prev,
@@ -24,31 +43,40 @@ export default function App() {
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={`max-w-xs px-4 py-2 rounded-lg ${
+            className={`px-4 py-2 rounded-lg ${
               msg.sender === "user"
                 ? "bg-blue-600 self-end"
-                : "bg-gray-700 self-start"
+                : "bg-gray-700 self-start mt-2"
             }`}
           >
             {msg.text}
           </div>
         ))}
       </div>
-      <div className="p-4 flex items-center bg-gray-800">
-        <input
-          type="text"
-          className="flex-1 p-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-        />
-        <button
-          className="ml-2 p-2 bg-blue-600 rounded-lg"
-          onClick={sendMessage}
-        >
-          <SendHorizontal size={20} />
-        </button>
-      </div>
+
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="p-4 flex flex-col bg-gray-800 space-y-2"
+      >
+        <div className="flex items-center">
+          <input
+            type="text"
+            placeholder="Escribe un mensaje..."
+            className="flex-1 p-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none"
+            {...register("text")}
+          />
+          <button
+            type="submit"
+            className="ml-2 p-2 bg-blue-600 rounded-lg"
+          >
+            <SendHorizontal size={20} />
+          </button>
+        </div>
+        {errors.text && (
+          <span className="text-red-400 text-sm">{errors.text.message}</span>
+        )}
+      </form>
     </div>
   );
 }
+
