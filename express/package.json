@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server_db.js"
   },
   "keywords": [],
   "author": "",
@@ -13,7 +13,9 @@
   "description": "",
   "dependencies": {
     "axios": "^1.10.0",
+    "dotenv": "^17.0.1",
     "express": "^5.1.0",
-    "lowdb": "^7.0.1"
+    "lowdb": "^7.0.1",
+    "mongodb": "^6.17.0"
   }
 }
