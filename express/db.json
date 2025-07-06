@@ -1,0 +1,18 @@
+{
+  "messages": [
+    {
+      "id": 123,
+      "title": "hola",
+      "content": [
+        {
+          "text": "hola",
+          "sender": "user"
+        },
+        {
+          "text": "<think>\n\n</think>\n\n¡Hola! ¿En qué puedo ayudarte hoy? 😊",
+          "sender": "bot"
+        }
+      ]
+    }
+  ]
+}

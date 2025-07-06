@@ -1,11 +1,23 @@
-const express = require('express');
-const axios = require('axios');
+// LOWDB es un ESM package, por lo que debes usar import en lugar de require.
+// Explicar y hacer los ajustes necesarios para que funcione en un entorno ESM.
+
+import express from 'express';
+import axios from 'axios';
+import { Low } from 'lowdb';
+import { JSONFile } from 'lowdb/node';
 
 const app = express();
 const port = 8080;
 
 // Middleware para parsear JSON
 app.use(express.json());
+// configurar lowdb
+const adapter = new JSONFile('db.json');
+const db = new Low(adapter, { messages: [], currentChat: [] });
+
+// crear una base de datos
+await db.read();
+db.data ||= { messages: [], currentChat: [] };
 
 // Ruta GET
 app.get('/', (req, res) => {
@@ -37,8 +49,8 @@ app.post('/api/ask', async (req, res) => {
         model: 'deepseek-r1:1.5b',
         prompt,
         max_tokens: 500,
-        stream: false
-      }
+        stream: false,
+      },
     );
 
     // Ollama devuelve un JSON directo
@@ -48,14 +60,37 @@ app.post('/api/ask', async (req, res) => {
     result = result.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
 
     res.json({ response: result });
-
   } catch (error) {
     console.error('Error en /api/ask:', error);
     res.status(500).json({ error: error.message || 'Error interno' });
   }
 });
 
+// Endpoint para obtener todos los mensajes
+app.get('/api/messages', async (req, res) => {
+  await db.read();
+  res.json(db.data.messages);
+});
+
+// Endpoint para guardar un mensaje
+app.post('/api/messages', async (req, res) => {
+  const { id, title, content } = req.body;
+  if (!id || !title || !content) {
+    return res
+      .status(400)
+      .json({ error: 'ID, title and content are required' });
+  }
+
+  db.data.messages.push({
+    id,
+    title,
+    content,
+  });
+  await db.write();
+
+  res.status(201).json({ message: 'Message saved successfully' });
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
-
