@@ -22,7 +22,7 @@ export default function History() {
   };
 
   return (
-    <div className="flex flex-col h-screen w-64 bg-gray-900 text-white p-4">
+    <div className="flex flex-col h-screen w-64 bg-gray-900 text-white p-4 border-r border-gray-800">
       <div className="flex flex-col items-start">
         <span className="mb-4">Logo</span>
         <div className="p-1 mt-4">
@@ -38,7 +38,7 @@ export default function History() {
       <div className="flex-1 overflow-y-auto mt-4 mb-4">
         <ul className="space-y-2 text-sm mt-4">
           {hook?.state?.messages?.map((msg, index) => (
-            <li key={index} className="p-2 bg-gray-800 rounded-lg">
+            <li key={index} className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 cursor-pointer">
               {msg.title}
             </li>
           ))}

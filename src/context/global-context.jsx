@@ -18,6 +18,7 @@ function globalReducer(state, action) {
 
       const newChat = {
         // obtenemos el primer mensaje del chat como titulo
+        id: crypto.randomUUID(),
         title: state.currentChat[0].text,
         content: state.currentChat
       }

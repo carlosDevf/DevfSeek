@@ -61,10 +61,10 @@ export default function App() {
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={`max-w-xs px-4 py-2 rounded-lg ${
+            className={`px-4 py-2 rounded-lg ${
               msg.sender === "user"
                 ? "bg-blue-600 self-end"
-                : "bg-gray-700 self-start"
+                : "bg-gray-700 self-start mt-2"
             }`}
           >
             {msg.text}
