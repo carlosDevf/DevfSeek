@@ -30,7 +30,7 @@ export default function History() {
             className="flex p-2 bg-blue-600 rounded-lg w-full hover:bg-blue-700 cursor-pointer"
             onClick={() => saveHistory()}
           >
-            <NewChatIcon />
+            <NewChatIcon />{" "}
             Nuevo chat
           </button>
         </div>
