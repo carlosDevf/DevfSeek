@@ -1,23 +1,16 @@
 {
   "name": "express",
   "version": "1.0.0",
-  "license": "MIT",
+  "main": "index.js",
   "scripts": {
-    "dev": "ts-node src/index.ts"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node server.js"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
-    "@prisma/client": "6.4.1",
-    "@prisma/extension-accelerate": "^1.2.2",
-    "express": "4.21.2"
-  },
-  "devDependencies": {
-    "@types/express": "5.0.0",
-    "@types/node": "22.13.5",
-    "prisma": "6.4.1",
-    "ts-node": "10.9.2",
-    "typescript": "5.7.3"
-  },
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "express": "^5.1.0"
   }
 }
